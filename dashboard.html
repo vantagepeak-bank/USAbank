@@ -4,114 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vantage Peak - Dashboard</title>
-    <!-- Google Translate Script -->
+    
+    <!-- GOOGLE TRANSLATE ENGINE -->
     <script type="text/javascript">
         function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'en', layout: google.translate.TranslateElement.InlineLayout.SIMPLE}, 'google_translate_element');
+            new google.translate.TranslateElement({
+                pageLanguage: 'en', 
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+                autoDisplay: false
+            }, 'google_translate_element');
         }
     </script>
     <script type="text/javascript" src="//://google.com"></script>
     
     <style>
         :root { --primary: #000000; --accent: #d4af37; --bg: #ffffff; }
-        body { font-family: 'Inter', sans-serif; margin: 0; padding-bottom: 80px; background: var(--bg); color: #1e293b; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding-bottom: 80px; background: var(--bg); color: #1e293b; }
         
-        #google_translate_element { padding: 10px; text-align: center; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        /* VISIBLE TRANSLATOR BAR */
+        .translate-bar { 
+            background: #f1f5f9; 
+            padding: 12px; 
+            text-align: center; 
+            border-bottom: 1px solid #e2e8f0;
+            min-height: 40px;
+        }
 
-        /* Header */
-        .header { background: #000; color: white; padding: 20px 20px 50px; text-align: center; border-radius: 0 0 25px 25px; }
-        .profile-img { width: 60px; height: 60px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; margin-bottom: 8px; }
-        .bank-name { color: var(--accent); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
+        /* Header matching your image */
+        .header { background: #000; color: white; padding: 25px 20px 60px; text-align: center; border-radius: 0 0 30px 30px; }
+        .profile-img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; margin-bottom: 10px; }
+        .bank-name { color: var(--accent); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: bold; }
 
-        .content { padding: 0 20px; margin-top: -30px; }
-        .balance-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border: 1px solid #eee; }
+        .content { padding: 0 20px; margin-top: -40px; }
+        .balance-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
 
-        /* Smaller Black Card */
+        /* Small Black Premium Card */
         .debit-card { 
             background: linear-gradient(135deg, #000000 0%, #2c2c2c 100%); 
-            border-radius: 15px; padding: 18px; color: white; position: relative;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); margin: 0 auto 25px;
-            width: 80%; max-width: 280px; cursor: pointer;
+            border-radius: 18px; padding: 20px; color: white; position: relative;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.3); margin: 0 auto 30px;
+            width: 85%; max-width: 300px; cursor: pointer;
         }
-        .chip { width: 30px; height: 24px; background: linear-gradient(135deg, #d4af37, #f9e29c); border-radius: 4px; margin-bottom: 15px; }
-        .card-num { font-size: 1rem; letter-spacing: 2px; font-family: 'Courier New', monospace; margin-bottom: 10px; }
-        .cvv-display { font-size: 0.7rem; color: var(--accent); display: none; font-weight: bold; }
-        .label { font-size: 0.5rem; text-transform: uppercase; color: #888; }
-        .val { font-size: 0.75rem; font-weight: 500; }
+        .chip { width: 35px; height: 28px; background: linear-gradient(135deg, #d4af37, #f9e29c); border-radius: 5px; margin-bottom: 15px; }
+        .card-num { font-size: 1.1rem; letter-spacing: 2px; font-family: 'Courier New', monospace; margin-bottom: 10px; }
+        .label { font-size: 0.55rem; text-transform: uppercase; color: #888; }
+        .val { font-size: 0.8rem; font-weight: 500; }
 
-        /* Larger Transaction History */
-        .card-white { background: #fff; padding: 5px 15px; border-radius: 12px; border: 1px solid #f1f5f9; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
-        .trans-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
-        .trans-info b { display: block; font-size: 1rem; color: #000; margin-bottom: 4px; }
-        .trans-info span { font-size: 0.75rem; color: #64748b; }
-        .amount-pos { color: #10b981; font-weight: bold; font-size: 1rem; }
-        .amount-neg { color: #ef4444; font-weight: bold; font-size: 1rem; }
+        /* Larger Transaction Rows */
+        .card-white { background: #fff; padding: 5px 15px; border-radius: 16px; border: 1px solid #f1f5f9; }
+        .trans-row { display: flex; justify-content: space-between; align-items: center; padding: 20px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        .trans-info b { display: block; font-size: 1.05rem; color: #000; margin-bottom: 4px; }
+        .trans-info span { font-size: 0.8rem; color: #64748b; }
+        .amount-pos { color: #10b981; font-weight: bold; font-size: 1.1rem; }
+        .amount-neg { color: #ef4444; font-weight: bold; font-size: 1.1rem; }
 
-        /* FIXED BOTTOM NAVIGATION (From your original code) */
-        .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; right: 0; 
-            background: white; display: flex; justify-content: space-around; 
-            padding: 15px 0; border-top: 1px solid #e2e8f0; z-index: 100;
-        }
-        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 0.75rem; cursor: pointer; border: none; background: none; flex:1; }
-        .nav-item.active { color: #0f172a; font-weight: bold; }
+        /* Navigation */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #e2e8f0; z-index: 100; }
+        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 0.75rem; border: none; background: none; flex:1; }
+        .nav-item.active { color: #000; font-weight: bold; }
         .nav-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
 
-        /* Overlays */
+        /* Popups */
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { border: 4px solid #333; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .modal-container { text-align: center; background: #fff; padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; border: 1px solid #ddd; }
-        .pin-input { border: none; border-bottom: 2px solid #000; font-size: 1.5rem; text-align: center; width: 100px; outline: none; margin-bottom: 20px; letter-spacing: 5px; }
-        .btn-confirm { background: #000; color: #fff; border: none; padding: 12px 25px; border-radius: 8px; font-weight: bold; width: 100%; cursor: pointer; }
+        .modal-container { text-align: center; background: #fff; padding: 25px; border-radius: 20px; width: 85%; max-width: 320px; }
+        .btn-confirm { background: #000; color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="google_translate_element"></div>
+    <!-- Language Translator Container -->
+    <div class="translate-bar">
+        <div id="google_translate_element">Loading Translator...</div>
+    </div>
 
+    <!-- PIN Screen -->
     <div id="pinOverlay" class="overlay">
         <div class="modal-container">
-            <h3 style="margin-top:0;">Security Check</h3>
-            <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="****">
+            <h3 style="margin-top:0;">Security PIN</h3>
+            <input type="password" id="pinInput" style="border:none; border-bottom:2px solid #00; font-size:2rem; text-align:center; width:120px; outline:none;" maxlength="4" placeholder="****">
             <button class="btn-confirm" onclick="verifyPin()">Unlock Card</button>
-            <button onclick="closeModals()" style="background:none; border:none; color:red; margin-top:15px; cursor:pointer;">Cancel</button>
+            <button onclick="closeModals()" style="background:none; border:none; color:red; margin-top:10px;">Cancel</button>
         </div>
     </div>
 
+    <!-- Receipt Screen -->
     <div id="receiptOverlay" class="overlay">
-        <div id="loadingReceipt" style="display:none; text-align:center; color:#fff;"><div class="spinner"></div><p>GENERATING RECEIPT...</p></div>
+        <div id="loadingReceipt" style="display:none; text-align:center; color:#fff;"><div class="spinner"></div><p>SECURE RETRIEVAL...</p></div>
         <div class="modal-container" id="receiptContent" style="display:none;">
-            <h2 style="margin:10px 0;">RECEIPT</h2>
-            <div id="receiptData" style="text-align:left; font-family:'Courier New'; font-size:0.9rem;"></div>
-            <button class="btn-confirm" style="margin-top:20px;" onclick="closeModals()">Done</button>
+            <h2 style="margin:0;">TRANSACTION</h2>
+            <div id="receiptData" style="text-align:left; font-family:'Courier New'; margin-top:15px; font-size:0.9rem;"></div>
+            <button class="btn-confirm" onclick="closeModals()">Close Receipt</button>
         </div>
     </div>
 
     <div class="header">
         <img src="profile.jpg" class="profile-img" onerror="this.src='https://ui-avatars.com'">
-        <div style="font-weight: 600;">Hyun Jéssica</div>
-        <div class="bank-name">Vantage Peak Financial</div>
+        <div style="font-weight: 600; font-size: 1.1rem;">Hyun Jéssica</div>
+        <div class="bank-name">VANTAGE PEAK FINANCIAL</div>
     </div>
 
     <div class="content">
         <div class="balance-card">
-            <div class="label">Total Available Balance</div>
-            <div style="font-size: 2rem; font-weight: 800; margin-top: 5px;">$1,786,000.00</div>
+            <div style="font-size:0.65rem; color:#888; text-transform:uppercase;">Total Available Balance</div>
+            <div style="font-size: 2.2rem; font-weight: 800; margin-top: 5px; color:#000;">$1,786,000.00</div>
         </div>
 
         <div class="debit-card" onclick="showPinModal()">
-            <div style="float:right; font-size:0.55rem; color:var(--accent); font-weight:bold;">CENTURION</div>
+            <div style="float:right; font-size:0.6rem; color:var(--accent); font-weight:bold;">CENTURION RESERVE</div>
             <div class="chip"></div>
             <div class="card-num" id="cardNum">**** **** **** 9901</div>
-            <div class="cvv-display" id="cvvBox">CVV: 370</div>
+            <div id="cvvBox" style="display:none; color:var(--accent); font-size:0.8rem; margin-bottom:10px;">CVV: 370</div>
             <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                 <div><div class="label">Holder</div><div class="val">HYUN JÉSSICA</div></div>
                 <div style="text-align: right;"><div class="label">Exp</div><div class="val">12/30</div></div>
             </div>
         </div>
 
-        <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 12px;">Recent Transactions</h3>
+        <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px;">Recent Transactions</h3>
         <div class="card-white">
             <div class="trans-row" onclick="openReceipt('David Sterling', '+$45,000.00', 'Apr 09, 2026')">
                 <div class="trans-info"><b>David Sterling</b><span>Apr 09, 2026 • 2:14 PM</span></div><div class="amount-pos">+$45,000.00</div>
@@ -125,6 +136,7 @@
         </div>
     </div>
 
+    <!-- Navigation linked as requested -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="location.href='dashboard.html'"><span class="nav-icon">🏠</span>Home</button>
         <button class="nav-item" onclick="location.href='transfer.html'"><span class="nav-icon">💸</span>Transfer</button>
@@ -135,23 +147,33 @@
     <script>
         function showPinModal() { document.getElementById('pinOverlay').style.display = 'flex'; }
         function closeModals() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
+        
         function verifyPin() {
             if (document.getElementById('pinInput').value === "1590") {
                 document.getElementById('cardNum').innerText = "4412 8821 0093 9901";
                 document.getElementById('cvvBox').style.display = 'block';
                 closeModals();
-            } else { alert("Wrong PIN"); }
+            } else { alert("Invalid PIN"); }
         }
+
         function openReceipt(name, amt, date) {
             const overlay = document.getElementById('receiptOverlay');
             overlay.style.display = 'flex';
             document.getElementById('loadingReceipt').style.display = 'block';
             document.getElementById('receiptContent').style.display = 'none';
+            
             setTimeout(() => {
                 document.getElementById('loadingReceipt').style.display = 'none';
                 document.getElementById('receiptContent').style.display = 'block';
-                document.getElementById('receiptData').innerHTML = `<p><b>DATE:</b> ${date}</p><p><b>NAME:</b> ${name}</p><p><b>STATUS:</b> COMPLETED</p><hr><p style="text-align:center; font-size:1.2rem;"><b>TOTAL: ${amt}</b></p>`;
-            }, 2500);
+                document.getElementById('receiptData').innerHTML = `
+                    <p><b>REF:</b> VP-TXN-${Math.floor(Math.random()*99999)}</p>
+                    <p><b>DATE:</b> ${date}</p>
+                    <p><b>PAYEE:</b> ${name}</p>
+                    <p><b>STATUS:</b> COMPLETED</p>
+                    <hr style="border:1px dashed #eee;">
+                    <p style="text-align:center; font-size:1.3rem;"><b>TOTAL: ${amt}</b></p>
+                `;
+            }, 2500); // 2.5 second delay
         }
     </script>
 </body>
