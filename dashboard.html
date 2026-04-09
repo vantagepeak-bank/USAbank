@@ -5,102 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vantage Peak - Dashboard</title>
     <style>
-        :root { --primary: #0f172a; --accent: #fbbf24; --bg: #f1f5f9; }
-        body { font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; background: var(--bg); color: #1e293b; }
+        :root { --primary: #0f172a; --accent: #fbbf24; --bg: #f8fafc; }
+        body { font-family: 'Inter', sans-serif; margin: 0; padding-bottom: 80px; background: var(--bg); color: #1e293b; }
         
-        /* Sidebar */
-        nav { width: 260px; background: var(--primary); color: white; padding: 30px 20px; display: flex; flex-direction: column; }
-        .profile-area { text-align: center; margin-bottom: 40px; }
-        .profile-img { width: 90px; height: 90px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; margin-bottom: 12px; }
-        .user-name { font-weight: 600; font-size: 1.1rem; }
-        nav h2 { color: var(--accent); font-size: 1.2rem; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; text-align: center; }
-        nav a { color: #94a3b8; text-decoration: none; padding: 12px; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; }
-        nav a:hover { background: #1e293b; color: white; border-left: 4px solid var(--accent); }
+        /* Top Header */
+        .header { background: var(--primary); color: white; padding: 25px 20px 60px; text-align: center; border-radius: 0 0 30px 30px; }
+        .profile-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover; margin-bottom: 10px; }
+        .bank-name { color: var(--accent); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
 
-        /* Main Content */
-        .main { flex: 1; padding: 40px; overflow-y: auto; }
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        /* Main Scrollable Content */
+        .content { padding: 0 20px; margin-top: -40px; }
 
-        /* Debit Card */
+        /* Modern Debit Card */
         .debit-card { 
-            width: 380px; height: 230px; 
             background: linear-gradient(135deg, #1e293b 0%, #475569 100%); 
-            border-radius: 20px; padding: 30px; color: white; position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15); margin-bottom: 50px;
+            border-radius: 20px; padding: 25px; color: white; position: relative;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2); margin-bottom: 30px;
         }
-        .card-type { position: absolute; top: 30px; right: 30px; font-weight: bold; font-size: 0.8rem; letter-spacing: 1px; }
-        .chip { width: 50px; height: 40px; background: #cbd5e1; border-radius: 8px; margin-bottom: 45px; }
-        .card-num { font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 25px; font-family: 'Courier New', monospace; }
-        .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; }
-        .label { font-size: 0.7rem; text-transform: uppercase; color: #94a3b8; }
-        .val { font-size: 0.9rem; font-weight: 500; margin-top: 4px; }
+        .card-type { float: right; font-size: 0.7rem; font-weight: bold; opacity: 0.8; }
+        .chip { width: 45px; height: 35px; background: #cbd5e1; border-radius: 6px; margin-bottom: 30px; }
+        .card-num { font-size: 1.3rem; letter-spacing: 3px; font-family: 'Courier New', monospace; margin-bottom: 20px; }
+        .label { font-size: 0.6rem; text-transform: uppercase; color: #94a3b8; }
+        .val { font-size: 0.85rem; font-weight: 500; margin-top: 2px; }
+
+        /* Balance Section */
+        .balance-card { background: white; padding: 20px; border-radius: 16px; margin-bottom: 25px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
 
         /* Transactions */
-        .card-white { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: #64748b; font-size: 0.8rem; padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; text-transform: uppercase; }
-        td { padding: 16px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
-        .amount-pos { color: #10b981; font-weight: 600; }
-        .amount-neg { color: #ef4444; font-weight: 600; }
+        .card-white { background: white; padding: 15px; border-radius: 16px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .trans-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f1f5f9; }
+        .trans-info b { display: block; font-size: 0.9rem; }
+        .trans-info span { font-size: 0.75rem; color: #64748b; }
+        .amount-pos { color: #10b981; font-weight: bold; }
+        .amount-neg { color: #ef4444; font-weight: bold; }
 
-        .overlay { display: none; position: fixed; inset: 0; background: white; z-index: 999; justify-content: center; align-items: center; font-size: 1.1rem; }
+        /* FIXED BOTTOM NAVIGATION */
+        .bottom-nav { 
+            position: fixed; bottom: 0; left: 0; right: 0; 
+            background: white; display: flex; justify-content: space-around; 
+            padding: 15px 0; border-top: 1px solid #e2e8f0; z-index: 100;
+        }
+        .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 0.75rem; cursor: pointer; border: none; background: none; }
+        .nav-item.active { color: var(--primary); font-weight: bold; }
+        .nav-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+
+        /* Overlay */
+        .overlay { display: none; position: fixed; inset: 0; background: white; z-index: 999; justify-content: center; align-items: center; flex-direction: column; font-weight: bold; }
+        .spinner { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <div id="overlay" class="overlay">Synchronizing secure data...</div>
+    <div id="overlay" class="overlay"><div class="spinner"></div>Synchronizing secure data...</div>
 
-    <nav>
-        <div class="profile-area">
-            <img src="profile.jpg" alt="Profile" class="profile-img" onerror="this.src='https://ui-avatars.com'">
-            <div class="user-name">hyun Jéssica</div>
-        </div>
-        <h2>Vantage Peak</h2>
-        <a onclick="goTo('dashboard.html')">Dashboard</a>
-        <a onclick="goTo('transfer.html')">Transfer</a>
-        <a onclick="goTo('settings.html')">Settings</a>
-        <a href="login.html" style="margin-top: auto; color: #f87171;">Logout</a>
-    </nav>
+    <div class="header">
+        <img src="profile.jpg" class="profile-img" onerror="this.src='https://ui-avatars.com'">
+        <div style="font-weight: 600;">hyun Jéssica</div>
+        <div class="bank-name">Vantage Peak Financial</div>
+    </div>
 
-    <div class="main">
-        <div class="top-bar">
-            <div>
-                <h1 style="margin: 0;">Portfolio Overview</h1>
-                <p style="color: #64748b; margin: 5px 0 0;">Welcome back, Jéssica</p>
-            </div>
-            <div style="text-align: right;">
-                <div class="label">Available Balance</div>
-                <div style="font-size: 2.2rem; font-weight: 800; color: var(--primary);">$1,786,000.00</div>
-            </div>
+    <div class="content">
+        <div class="balance-card">
+            <div class="label">Total Available Balance</div>
+            <div style="font-size: 1.8rem; font-weight: 800; margin-top: 5px;">$1,786,000.00</div>
         </div>
 
         <div class="debit-card">
             <div class="card-type">PRIVATE CLIENT</div>
             <div class="chip"></div>
             <div class="card-num">**** **** **** 9901</div>
-            <div class="card-bottom">
-                <div><div class="label">Card Holder</div><div class="val">HYUN JÉSSICA</div></div>
-                <div><div class="label">Status</div><div class="val">ACTIVE</div></div>
+            <div style="display: flex; justify-content: space-between;">
+                <div><div class="label">Holder</div><div class="val">HYUN JÉSSICA</div></div>
+                <div style="text-align: right;"><div class="label">Status</div><div class="val">ACTIVE</div></div>
             </div>
         </div>
 
-        <h3>Recent Transactions</h3>
+        <h3 style="font-size: 1rem;">Recent Activity</h3>
         <div class="card-white">
-            <table>
-                <thead>
-                    <tr><th>Description</th><th>Type</th><th>Date</th><th>Amount</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Dividend Reinvestment</td><td>Credit</td><td>Apr 09, 2026</td><td class="amount-pos">+$12,450.00</td></tr>
-                    <tr><td>Luxury Estate Mgmt</td><td>Payment</td><td>Apr 08, 2026</td><td class="amount-neg">-$4,200.00</td></tr>
-                    <tr><td>Wire Transfer Inbound</td><td>Wire</td><td>Apr 05, 2026</td><td class="amount-pos">+$150,000.00</td></tr>
-                    <tr><td>Private Jet Charter</td><td>Travel</td><td>Apr 02, 2026</td><td class="amount-neg">-$18,500.00</td></tr>
-                    <tr><td>Global Equity Fund</td><td>Investment</td><td>Mar 28, 2026</td><td class="amount-neg">-$50,000.00</td></tr>
-                    <tr><td>Boutique Concierge</td><td>Service</td><td>Mar 25, 2026</td><td class="amount-neg">-$1,250.00</td></tr>
-                    <tr><td>Capital Gains Dist.</td><td>Credit</td><td>Mar 20, 2026</td><td class="amount-pos">+$8,900.00</td></tr>
-                </tbody>
-            </table>
+            <div class="trans-row"><div class="trans-info"><b>Dividend Reinvestment</b><span>Apr 09, 2026</span></div><div class="amount-pos">+$12,450.00</div></div>
+            <div class="trans-row"><div class="trans-info"><b>Luxury Estate Mgmt</b><span>Apr 08, 2026</span></div><div class="amount-neg">-$4,200.00</div></div>
+            <div class="trans-row"><div class="trans-info"><b>Wire Transfer Inbound</b><span>Apr 05, 2026</span></div><div class="amount-pos">+$150,000.00</div></div>
+            <div class="trans-row"><div class="trans-info"><b>Private Jet Charter</b><span>Apr 02, 2026</span></div><div class="amount-neg">-$18,500.00</div></div>
+            <div class="trans-row"><div class="trans-info"><b>Global Equity Fund</b><span>Mar 28, 2026</span></div><div class="amount-neg">-$50,000.00</div></div>
+            <div class="trans-row"><div class="trans-info"><b>Boutique Concierge</b><span>Mar 25, 2026</span></div><div class="amount-neg">-$1,250.00</div></div>
+            <div class="trans-row" style="border:none;"><div class="trans-info"><b>Capital Gains Dist.</b><span>Mar 20, 2026</span></div><div class="amount-pos">+$8,900.00</div></div>
         </div>
     </div>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="goTo('dashboard.html')"><span class="nav-icon">🏠</span>Home</button>
+        <button class="nav-item" onclick="goTo('transfer.html')"><span class="nav-icon">💸</span>Transfer</button>
+        <button class="nav-item" onclick="goTo('settings.html')"><span class="nav-icon">⚙️</span>Settings</button>
+        <button class="nav-item" onclick="location.href='index.html'" style="color:#ef4444;"><span class="nav-icon">⏻</span>Logout</button>
+    </nav>
 
     <script>
         function goTo(url) {
@@ -110,3 +107,4 @@
     </script>
 </body>
 </html>
+
