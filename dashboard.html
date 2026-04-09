@@ -23,6 +23,7 @@
         
         #google_translate_element { padding: 8px; text-align: center; background: #f8fafc; font-size: 0.8rem; border-bottom: 1px solid #eee; }
 
+        /* Header matching Image */
         .header { background: #000; color: white; padding: 25px 20px 60px; text-align: center; border-radius: 0 0 30px 30px; }
         .profile-img { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--accent); object-fit: cover; margin-bottom: 10px; }
         .bank-name { color: var(--accent); font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; }
@@ -30,18 +31,21 @@
         .content { padding: 0 20px; margin-top: -40px; }
         .balance-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 25px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #f1f5f9; }
 
+        /* Sleek Black Card with Eye Icon */
         .debit-card { 
             background: linear-gradient(135deg, #000000 0%, #2c2c2c 100%); 
             border-radius: 18px; padding: 20px; color: white; position: relative;
             box-shadow: 0 12px 25px rgba(0,0,0,0.3); margin: 0 auto 30px;
             width: 85%; max-width: 290px; cursor: pointer;
         }
+        .eye-icon { position: absolute; top: 20px; right: 20px; font-size: 1.2rem; color: var(--accent); opacity: 0.8; }
         .chip { width: 35px; height: 28px; background: linear-gradient(135deg, #d4af37, #f9e29c); border-radius: 5px; margin-bottom: 15px; }
         .card-num { font-size: 1.1rem; letter-spacing: 2px; font-family: 'Courier New', monospace; margin-bottom: 10px; }
         .cvv-box { font-size: 0.75rem; color: var(--accent); display: none; margin-bottom: 5px; font-weight: bold; }
         .label { font-size: 0.55rem; text-transform: uppercase; color: #888; }
         .val { font-size: 0.8rem; font-weight: 500; }
 
+        /* Larger Transaction Rows */
         .card-white { background: #fff; padding: 5px 15px; border-radius: 16px; border: 1px solid #f1f5f9; }
         .trans-row { display: flex; justify-content: space-between; align-items: center; padding: 22px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
         .trans-info b { display: block; font-size: 1.1rem; color: #000; margin-bottom: 4px; }
@@ -49,15 +53,17 @@
         .amount-pos { color: #10b981; font-weight: 800; font-size: 1.1rem; }
         .amount-neg { color: #ef4444; font-weight: 800; font-size: 1.1rem; }
 
+        /* Navigation Links */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 18px 0; border-top: 1px solid #e2e8f0; z-index: 100; }
         .nav-item { text-align: center; color: #64748b; text-decoration: none; font-size: 0.8rem; border: none; background: none; flex: 1; cursor: pointer; }
         .nav-item.active { color: #000; font-weight: 900; }
         .nav-icon { font-size: 1.5rem; display: block; margin-bottom: 5px; }
 
+        /* Overlays */
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 999; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { border: 4px solid #333; border-top: 4px solid var(--accent); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .modal-container { text-align: center; background: #fff; padding: 25px; border-radius: 20px; width: 85%; max-width: 310px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .modal-container { text-align: center; background: #fff; padding: 25px; border-radius: 20px; width: 85%; max-width: 310px; }
         .btn-confirm { background: #000; color: #fff; border: none; padding: 14px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 15px; }
     </style>
 </head>
@@ -65,24 +71,27 @@
 
     <div id="google_translate_element"></div>
 
+    <!-- PIN Entry Overlay -->
     <div id="pinOverlay" class="overlay">
         <div class="modal-container">
-            <h3 style="margin-top:0;">Identity Check</h3>
+            <h3 style="margin-top:0;">Secure Check</h3>
+            <p style="font-size:0.8rem; color:#666;">Enter PIN to reveal card details</p>
             <input type="password" id="pinInput" style="border:none; border-bottom:3px solid #000; font-size:2.5rem; text-align:center; width:140px; outline:none; letter-spacing:8px;" maxlength="4" placeholder="••••">
-            <button class="btn-confirm" onclick="verifyPin()">AUTHENTICATE</button>
+            <button class="btn-confirm" onclick="verifyPin()">UNLOCK</button>
             <button onclick="closeModals()" style="background:none; border:none; color:#ff3b30; margin-top:15px; font-weight:bold;">Cancel</button>
         </div>
     </div>
 
+    <!-- 2.5s Receipt Overlay -->
     <div id="receiptOverlay" class="overlay">
         <div id="loadingReceipt" style="display:none; text-align:center; color:#fff;">
             <div class="spinner"></div>
-            <p style="letter-spacing:1px; font-size:0.8rem;">ACCESSING PRIVATE LEDGER...</p>
+            <p style="letter-spacing:1px; font-size:0.8rem;">RETRIEVING RECORD...</p>
         </div>
         <div class="modal-container" id="receiptContent" style="display:none;">
-            <div style="font-size:0.6rem; color:var(--accent); font-weight:bold; letter-spacing:2px;">VANTAGE PEAK OFFICIAL RECEIPT</div>
+            <div style="font-size:0.6rem; color:var(--accent); font-weight:bold; letter-spacing:2px;">OFFICIAL TRANSACTION RECORD</div>
             <div id="receiptData" style="text-align:left; font-family:'Courier New', monospace; margin-top:20px; font-size:0.85rem; line-height:1.6;"></div>
-            <button class="btn-confirm" onclick="closeModals()">CLOSE</button>
+            <button class="btn-confirm" onclick="closeModals()">DONE</button>
         </div>
     </div>
 
@@ -98,10 +107,11 @@
             <div style="font-size: 2.3rem; font-weight: 900; margin-top: 5px; color:#000;">$1,786,000.00</div>
         </div>
 
+        <!-- Card with First 4 and Last 4 Visible -->
         <div class="debit-card" onclick="showPinModal()">
-            <div style="float:right; font-size:0.55rem; color:var(--accent); font-weight:900; letter-spacing:1px;">CENTURION RESERVE</div>
+            <span class="eye-icon">👁️</span>
             <div class="chip"></div>
-            <div class="card-num" id="cardNum">**** **** **** 9901</div>
+            <div class="card-num" id="cardNum">4412 **** **** 9901</div>
             <div id="cvvBox" class="cvv-box">CVV: 370</div>
             <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                 <div><div class="label">Holder</div><div class="val">HYUN JÉSSICA</div></div>
@@ -111,7 +121,6 @@
 
         <h3 style="font-size: 1rem; font-weight: 800; margin-bottom: 15px; color:#000;">Recent Transactions</h3>
         <div class="card-white">
-            <!-- Latest Transactions -->
             <div class="trans-row" onclick="openReceipt('David Sterling', '+$45,000.00', 'Apr 09, 2026')">
                 <div class="trans-info"><b>David Sterling</b><span>Apr 09, 2026 • 2:14 PM</span></div><div class="amount-pos">+$45,000.00</div>
             </div>
@@ -121,7 +130,6 @@
             <div class="trans-row" onclick="openReceipt('Marcus Thorne', '-$12,800.00', 'Apr 07, 2026')">
                 <div class="trans-info"><b>Marcus Thorne</b><span>Apr 07, 2026 • 4:30 PM</span></div><div class="amount-neg">-$12,800.00</div>
             </div>
-            <!-- Past Transactions Added -->
             <div class="trans-row" onclick="openReceipt('Elena Rodriguez', '+$150,000.00', 'Apr 05, 2026')">
                 <div class="trans-info"><b>Elena Rodriguez</b><span>Apr 05, 2026 • 9:00 AM</span></div><div class="amount-pos">+$150,000.00</div>
             </div>
@@ -134,6 +142,7 @@
         </div>
     </div>
 
+    <!-- Navigation linked correctly -->
     <nav class="bottom-nav">
         <button class="nav-item active" onclick="location.href='dashboard.html'"><span class="nav-icon">🏠</span>Home</button>
         <button class="nav-item" onclick="location.href='transfer.html'"><span class="nav-icon">💸</span>Transfer</button>
@@ -170,14 +179,13 @@
                 document.getElementById('receiptData').innerHTML = `
                     <p><b>REF ID:</b> V-TXN-${Math.floor(100000 + Math.random() * 900000)}</p>
                     <p><b>DATE:</b> ${date}</p>
-                    <p><b>ENTITY:</b> ${name}</p>
+                    <p><b>PAYEE:</b> ${name}</p>
                     <p><b>STATUS:</b> SETTLED</p>
                     <div style="border-top:1px dashed #ddd; margin:15px 0; padding-top:15px; text-align:center;">
-                        <span style="color:#888; font-size:0.7rem;">SETTLEMENT AMOUNT</span><br>
                         <b style="font-size:1.4rem; color:${amt.includes('+') ? '#10b981' : '#ef4444'}">${amt}</b>
                     </div>
                 `;
-            }, 2500);
+            }, 2500); // 2.5 second delay
         }
     </script>
 </body>
