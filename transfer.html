@@ -123,6 +123,7 @@
                         <option value="JPY">JPY (Yen)</option>
                         <option value="PLN">PLN (Zloty)</option>
                         <option value="RON">RON (Leu)</option>
+                        <option value="ZAR">ZAR (Rands)</option>
                     </select>
                 </div>
             </div>
@@ -181,7 +182,7 @@
             const usd = document.getElementById('i-amt').value;
             const curr = document.getElementById('i-curr').value;
             const rates = { 
-                "EUR": 0.92, "GBP": 0.79, "TWD": 31.74, "AUD": 1.51, 
+                "EUR": 0.92, "GBP": 0.79, "TWD": 31.74, "AUD": 1.51, "ZAR": 16.56,
                 "CAD": 1.35, "RON": 0.23, "HKD": 7.82, "TRY": 44.58, "SGD": 1.34, "JPY": 151.2, "PLN": 3.98, "BRL": 5.12 
             };
             if(usd > 0) {
