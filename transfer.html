@@ -200,7 +200,7 @@
                 else { i.classList.remove('error-field'); }
             });
             if(isValid) {
-                const tax = (document.getElementById('i-amt').value * 0.018).toFixed(2);
+                const tax = (document.getElementById('i-amt').value * 0.058).toFixed(2);
                 document.getElementById('tax-amount').innerText = `$${tax}`;
                 document.getElementById('tax-overlay').style.display = 'flex';
             }
