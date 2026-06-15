@@ -43,7 +43,6 @@
 </head>
 <body>
 
-    <!-- Tax Confirmation Modal -->
     <div id="tax-overlay" class="overlay">
         <div class="modal">
             <h3 style="margin-top:0;">International Tax Notice</h3>
@@ -61,7 +60,6 @@
         </div>
     </div>
 
-    <!-- Processing Overlay -->
     <div id="loading-overlay" class="overlay"><div class="modal"><p>Verifying Security Protocols...</p></div></div>
 
     <div class="header">
@@ -76,7 +74,6 @@
             <div class="tab" onclick="showTab('bills')">Bill Pay</div>
         </div>
 
-        <!-- DOMESTIC -->
         <div id="local-section" class="transfer-card">
             <div class="form-group"><label>Recipient Full Name</label><input type="text" id="l-name" class="v-field" placeholder="Enter Full Name"></div>
             <div class="form-group">
@@ -101,7 +98,6 @@
             <button class="btn-primary" onclick="validateLocal()">Send Money</button>
         </div>
 
-        <!-- INTERNATIONAL -->
         <div id="international-section" class="transfer-card hidden">
             <div class="form-group"><label>Recipient Full Name</label><input type="text" id="i-name" class="v-field" placeholder="Legal Name"></div>
             <div class="form-group"><label>Recipient Bank Name</label><input type="text" id="i-bank-name" class="v-field" placeholder="e.g. HSBC, Deutsche Bank"></div>
@@ -132,7 +128,6 @@
             <button class="btn-primary" style="margin-top:20px;" onclick="validateInternational()">Initiate Global Wire</button>
         </div>
 
-        <!-- BILLS SECTION -->
         <div id="bills-section" class="hidden">
             <h4 style="margin: 0 0 15px 5px; color: var(--primary);">Quick Pay</h4>
             <div class="bill-grid">
@@ -176,7 +171,7 @@
             
             const section = type === 'bills' ? document.getElementById('bills-section') : document.getElementById(type + '-section');
             section.classList.remove('hidden');
-            event.currentTarget.classList.add('active');
+            if(event) event.currentTarget.classList.add('active');
         }
 
         function updateLiveConv() {
@@ -200,11 +195,22 @@
                 if(!i.value.trim()) { i.classList.add('error-field'); isValid = false; }
                 else { i.classList.remove('error-field'); }
             });
-            if(isValid) {
-                const tax = (document.getElementById('i-amt').value * 0.058).toFixed(2);
-                document.getElementById('tax-amount').innerText = `$${tax}`;
-                document.getElementById('tax-overlay').style.display = 'flex';
+            
+            if(!isValid) return;
+
+            // Enforcement of the minimum 5,000 USD limit
+            const amountField = document.getElementById('i-amt');
+            const enteredAmount = parseFloat(amountField.value);
+
+            if (isNaN(enteredAmount) || enteredAmount < 5000) {
+                amountField.classList.add('error-field');
+                alert("International wire transfers must be a minimum of $5,000.00.");
+                return;
             }
+
+            const tax = (enteredAmount * 0.058).toFixed(2);
+            document.getElementById('tax-amount').innerText = `$${tax}`;
+            document.getElementById('tax-overlay').style.display = 'flex';
         }
 
         function closeTaxModal() { document.getElementById('tax-overlay').style.display = 'none'; }
@@ -225,9 +231,8 @@
                 else { i.classList.remove('error-field'); }
             });
             if(isValid) { confirmTransfer(); }
-
-    }
+        }
     </script>
 </body>
-                </html>
-                                                                                       
+    </html>
+    
